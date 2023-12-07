@@ -1,10 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = 3000;
 
-mongoose.connect('mongodb://localhost/mentoring_app', { useNewUrlParser: true, useUnifiedTopology: true });
+const connectDb = async() => {
+  try{
+      const connect = await mongoose.connect(process.env.CONNECTION_STRING);
+      console.log("Database connected",connect.connection.host,connect.connection.name);
+  }
+  catch(err){
+      console.log(err);
+      process.exit(1);
+  }
+}
+
+connectDb();
 
 //Mongoose models
 const Mentor = mongoose.model('Mentor', 
